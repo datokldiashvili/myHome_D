@@ -4,6 +4,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,13 +12,14 @@ namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
+       
         private readonly ITokenService _tokenService;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _tokenService = tokenService;
-            _context = context;
+            _userManager = userManager;
         }
 
         [HttpPost("register")] // POST: api/account/register?username=dave&password=pwd
@@ -27,52 +29,50 @@ namespace API.Controllers
             if (await UserExist(registerDto.Username )) return BadRequest("სახელი დაკავებულია");
 
 
-            using var hmac = new HMACSHA512();
-
             var user = new AppUser
             {
                 UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
             };
+            
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            if(!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
             return  new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user)
             };
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => 
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => 
             x.UserName == loginDto.Username);
 
-            if (user == null) return Unauthorized("პაროლი არასწორია");
+            if (user == null) return Unauthorized("სახელი არასწორია");
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var result  = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+            if(!result) return Unauthorized("პაროლი არასწორია");
 
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("პაროლი არასწორია");
-            }
             
              return  new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 
         private async Task<bool> UserExist(string username)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }

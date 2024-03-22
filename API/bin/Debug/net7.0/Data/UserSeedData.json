@@ -1,0 +1,19 @@
+[
+    {
+        "UserName" : "ლუკა",
+        "Gender": "female",
+        "DateOfBirth": "1999-03-01",
+        "Created": "2024-01-02",
+        "LastActive": "2020-06-21",
+        "City":"ქუთაისი",
+        "Country": "საქართველო",
+        "Photos": [
+            {
+                "Url": "https://www.thesun.co.uk/wp-content/uploads/2022/01/NINTCHDBPICT000703368802.jpg?strip=all&w=418",
+                "IsMain": true
+            }
+        ]
+
+         
+    }
+]

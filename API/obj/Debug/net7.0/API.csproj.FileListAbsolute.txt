@@ -69,3 +69,9 @@ C:\Users\User\myHome_D\API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dl
 C:\Users\User\myHome_D\API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\User\myHome_D\API\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\User\myHome_D\API\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\User\myHome_D\API\bin\Debug\net7.0\Data\UserSeedData.json
+C:\Users\User\myHome_D\API\bin\Debug\net7.0\AutoMapper.dll
+C:\Users\User\myHome_D\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\User\myHome_D\API\bin\Debug\net7.0\CloudinaryDotNet.dll
+C:\Users\User\myHome_D\API\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\User\myHome_D\API\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
