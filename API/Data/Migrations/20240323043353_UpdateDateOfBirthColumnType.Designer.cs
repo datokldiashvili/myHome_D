@@ -281,7 +281,7 @@ namespace API.Data.Migrations
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                                                .IsRequired();
 
                     b.Navigation("Role");
 
@@ -373,3 +373,5 @@ namespace API.Data.Migrations
         }
     }
 }
+
+                       

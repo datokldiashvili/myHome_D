@@ -1,51 +1,80 @@
-﻿
-using System;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
+using System;
 
 namespace API.Data.Migrations
 {
-    /// <inheritdoc />
     public partial class UpdateDateOfBirthColumnType : Migration
     {
-       protected override void Up(MigrationBuilder migrationBuilder)
-{
-    migrationBuilder.AlterColumn<DateTime>(
-        name: "DateOfBirth",
-        table: "AspNetUsers",
-        type: "TEXT",
-        nullable: false,
-        defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-        oldClrType: typeof(string),
-        oldType: "TEXT",
-        oldNullable: true);
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "DateOfBirth",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
 
-    migrationBuilder.AlterColumn<string>(
-        name: "City",
-        table: "AspNetUsers",
-        type: "VARCHAR(255)", 
-        nullable: true,
-        oldClrType: typeof(string),
-        oldType: "TEXT");
+            migrationBuilder.AlterColumn<string>(
+                name: "City",
+                table: "AspNetUsers",
+                type: "VARCHAR(255)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
 
-    migrationBuilder.AlterColumn<string>(
-        name: "Country",
-        table: "AspNetUsers",
-        type: "VARCHAR(255)", 
-        nullable: true,
-        oldClrType: typeof(string),
-        oldType: "TEXT");
+            migrationBuilder.AlterColumn<string>(
+                name: "Country",
+                table: "AspNetUsers",
+                type: "VARCHAR(255)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
 
-    migrationBuilder.AlterColumn<DateTime>(
-        name: "LastActive",
-        table: "AspNetUsers",
-        type: "DATETIME", 
-        nullable: false,
-        oldClrType: typeof(DateTime),
-        oldType: "TEXT");
-}
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "LastActive",
+                table: "AspNetUsers",
+                type: "DATETIME",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "TEXT");
+        }
 
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "DateOfBirth",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(DateTime),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "City",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "VARCHAR(255)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Country",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "VARCHAR(255)");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "LastActive",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "DATETIME");
+        }
     }
 }
-
