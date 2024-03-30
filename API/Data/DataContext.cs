@@ -9,6 +9,8 @@ namespace API.Data
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<Property> Properties { get; set; }
+        public DbSet<PropertyParametersEntity> PropertyParameters { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserLike> Likes { get; set; }
 
@@ -20,8 +22,13 @@ namespace API.Data
         {
             base.OnModelCreating(builder);
 
-           
+            builder.Entity<Address>().HasNoKey();
 
+            builder.Entity<Property>()
+                .HasOne(p => p.PropertyParameters)
+                .WithOne(pp => pp.Property)
+                .HasForeignKey<PropertyParametersEntity>(pp => pp.PropertyId);
+            
             builder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });
 

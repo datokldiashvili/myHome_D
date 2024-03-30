@@ -9,21 +9,24 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
+
+
+var myHouse = new House();
+myHouse.Type = "House";
+
+var myCountryHouse = new House();
+myCountryHouse.Type = "Country House";
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
@@ -35,11 +38,11 @@ try
     await context.Database.MigrateAsync();
     await Seed.SeedUsers(userManager, roleManager);
 }
-
 catch (Exception ex)
 {
     var logger = services.GetService<ILogger<Program>>();
-    logger.LogError(ex, "მოხდა შეცდომა მიგრაციებისას");
+    logger.LogError(ex, "An error occurred during database migration");
 }
 
 app.Run();
+
