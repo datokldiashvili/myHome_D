@@ -6,10 +6,6 @@ public class PropertyParametersEntity
     [Key]
     public int Id { get; set; }
 
-    // Foreign key to Property
-    [ForeignKey("Property")]
-    public int PropertyId { get; set; }
-
     // Parameters
     public double YardArea { get; set; }
     public double TotalArea { get; set; }
@@ -36,6 +32,36 @@ public class PropertyParametersEntity
     public bool Electricity { get; set; }
     public bool Television { get; set; }
 
+    // Foreign key to Property
+    public int PropertyId { get; set; }
+
     // Navigation property to Property
+    [ForeignKey("PropertyId")]
     public Property Property { get; set; }
+
+    // Enum definitions
+    public enum BalconyType
+    {
+        Close,
+        Open
+    }
+
+    public enum ParkingType
+    {
+        YardParking,
+        Garage
+    }
+
+    public enum HotWaterType
+    {
+        GasHeaterTank,
+        ElectricHeaterTank
+    }
+
+    public enum HeatingType
+    {
+        CentralHeating,
+        GasHeater,
+        PowerHeater
+    }
 }

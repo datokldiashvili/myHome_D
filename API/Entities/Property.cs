@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Property
 {
-    public int Id { get; set; }
+   public int Id { get; set; }
     public string Name { get; set; }
     public Address Address { get; set; }
     public string Type { get; set; }
-    public PropertyParameters PropertyParameters { get; set; } 
+
+    public PropertyParametersEntity PropertyParameters { get; set; }
 
     public Property()
     {
@@ -27,10 +30,10 @@ public class Building : Property
 public class House : Building
 {
     public int NumBedrooms { get; set; }
-    public BalconyType Balcony { get; set; }
-    public ParkingType Parking { get; set; }
-    public HotWaterType HotWater { get; set; }
-    public HeatingType Heating { get; set; }
+    public PropertyBalconyType Balcony { get; set; }
+    public PropertyParkingType Parking { get; set; }
+    public PropertyHotWaterType HotWater { get; set; }
+    public PropertyHeatingType Heating { get; set; }
 }
 
 public class Hotel : Building
@@ -40,6 +43,9 @@ public class Hotel : Building
 
 public class Address
 {
+[Key]
+    public int Id { get; set; }
+
     public string Street { get; set; }
     public string City { get; set; }
     public string State { get; set; }
@@ -49,28 +55,29 @@ public class Address
 public class PropertyParameters
 {
     public int Id { get; set; }
+
     public Property Property { get; set; } 
 }
 
-public enum BalconyType
+public enum PropertyBalconyType
 {
     Close,
     Open
 }
 
-public enum ParkingType
+public enum PropertyParkingType
 {
     YardParking,
     Garage
 }
 
-public enum HotWaterType
+public enum PropertyHotWaterType
 {
     GasHeaterTank,
     ElectricHeaterTank
 }
 
-public enum HeatingType
+public enum PropertyHeatingType
 {
     CentralHeating,
     GasHeater,

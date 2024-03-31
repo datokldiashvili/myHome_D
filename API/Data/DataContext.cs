@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class DataContext : IdentityDbContext<AppUser, AppRole, int, 
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int,
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
@@ -22,26 +22,23 @@ namespace API.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Address>().HasNoKey();
-
             builder.Entity<Property>()
-                .HasOne(p => p.PropertyParameters)
+                .HasOne<PropertyParametersEntity>(p => p.PropertyParameters)
                 .WithOne(pp => pp.Property)
-                .HasForeignKey<PropertyParametersEntity>(pp => pp.PropertyId);
-            
+                .HasForeignKey<PropertyParametersEntity>(pp => pp.PropertyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });
 
             builder.Entity<UserLike>()
                 .HasOne(s => s.SourceUser)
                 .WithMany(l => l.LikedUsers)
-                .HasForeignKey(s => s.SourceUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<UserLike>()
                 .HasOne(s => s.TargetUser)
                 .WithMany(l => l.LikedByUsers)
-                .HasForeignKey(s => s.TargetUserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
